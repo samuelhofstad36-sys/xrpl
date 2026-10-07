@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Attestry — Verified identity credentials for the XRP Ledger</title>
+<meta name="description" content="Verify once and receive a native XRPL credential proving your wallet belongs to a verified person. Launching soon.">
+<meta name="theme-color" content="#0D1014">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30' fill='none' stroke='%237FDDB0' stroke-width='2.2'%3E%3Cpath d='M15 2.5 26 7v8c0 6.5-4.6 11-11 12.5C8.6 26 4 21.5 4 15V7z'/%3E%3Cpath d='m10 15 3.5 3.5L20.5 11'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0D1014;--bg2:#10141A;--panel:#12161C;--field:#151A20;--line:#262C34;--line2:#1D2229;--text:#E7EAEE;--soft:#B9C0C9;--muted:#8C95A0;--label:#7D8692;--accent:#7FDDB0}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',system-ui,sans-serif;font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:#9FE3C2}a:hover{color:#CFF3E0}
+.wrap{max-width:1200px;margin:0 auto;padding-left:24px;padding-right:24px}
+.mono{font-family:'IBM Plex Mono',monospace}
+.serif{font-family:'Fraunces',Georgia,serif}
+header{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center;padding-top:28px;padding-bottom:28px}
+.brand{display:flex;align-items:center;gap:12px;font-size:24px;font-weight:600;letter-spacing:-.01em}
+.pill{display:flex;align-items:center;gap:10px;font-size:13px;color:#A7AFB9;border:1px solid var(--line);border-radius:999px;padding:8px 14px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--accent)}
+.hero{display:flex;flex-wrap:wrap;gap:64px;align-items:center;padding-top:64px;padding-bottom:96px}
+.hero-copy{flex:999 1 520px;min-width:0;display:flex;flex-direction:column;gap:28px}
+.eyebrow{margin:0;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:#A7AFB9}
+h1{margin:0;font-weight:500;font-size:clamp(44px,6vw,76px);line-height:1.02;letter-spacing:-.025em}
+.lede{margin:0;max-width:560px;font-size:19px;color:var(--soft)}
+form{display:flex;flex-direction:column;gap:10px;max-width:560px}
+label{font-size:14px;color:#A7AFB9}
+.row{display:flex;flex-wrap:wrap;gap:10px}
+input[type=email]{flex:1 1 260px;min-width:0;height:52px;padding:0 16px;background:var(--field);color:var(--text);border:1px solid #2D343D;border-radius:10px;font:inherit;font-size:16px}
+input[type=email]:focus{outline:2px solid var(--accent);outline-offset:1px}
+input::placeholder{color:#6B7480}
+button{flex:0 0 auto;height:52px;padding:0 24px;background:var(--accent);color:var(--bg);border:0;border-radius:10px;font:inherit;font-size:16px;font-weight:600;cursor:pointer}
+button:hover{filter:brightness(1.08)}
+button:disabled{opacity:.6;cursor:wait}
+.hint{margin:0;font-size:14px;color:var(--muted)}
+.hint.err{color:#F2A08B}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.done{max-width:560px;display:flex;gap:14px;align-items:center;background:#132119;border:1px solid #23402F;border-radius:12px;padding:18px 20px}
+.card-col{flex:1 1 380px;min-width:0;max-width:460px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;overflow:hidden;font-size:14px}
+.card-head{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-bottom:1px solid var(--line);color:#A7AFB9;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+.card-body{padding:22px 20px;display:flex;flex-direction:column;gap:16px}
+.field{display:flex;flex-direction:column;gap:4px}
+.field small{color:var(--label);font-size:12px}
+.field span em{font-style:normal;color:var(--label)}
+.card-foot{padding:14px 20px;border-top:1px dashed #2D343D;color:var(--muted);font-size:12px}
+.band{border-top:1px solid var(--line2);border-bottom:1px solid var(--line2);background:var(--bg2)}
+.band .wrap{padding-top:88px;padding-bottom:88px;display:flex;flex-direction:column;gap:48px}
+h2{margin:0;font-weight:500;font-size:clamp(32px,4vw,44px);line-height:1.1;letter-spacing:-.02em}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:40px}
+.step{display:flex;flex-direction:column;gap:12px}
+.step .num{font-size:14px;color:var(--accent)}
+h3{margin:0;font-size:21px;font-weight:600}
+.step p,.split-copy p{margin:0;color:var(--soft)}
+.split{display:flex;flex-wrap:wrap;gap:64px;padding-top:96px;padding-bottom:96px}
+.split-copy{flex:1 1 340px;min-width:0;display:flex;flex-direction:column;gap:18px}
+.tiles{flex:1 1 480px;min-width:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.tile{border:1px solid var(--line);border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:8px}
+.tile h3{font-size:18px}
+.tile p{margin:0;font-size:15px;color:var(--soft)}
+footer{border-top:1px solid var(--line2)}
+footer .wrap{padding-top:32px;padding-bottom:32px;display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;font-size:14px;color:var(--muted)}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+
+<header class="wrap">
+  <div class="brand serif">
+    <svg width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="#7FDDB0" stroke-width="1.8" aria-hidden="true"><path d="M15 2.5 26 7v8c0 6.5-4.6 11-11 12.5C8.6 26 4 21.5 4 15V7z"/><path d="m10 15 3.5 3.5L20.5 11"/></svg>
+    <span>Attestry</span>
+  </div>
+  <div class="pill mono"><span class="dot"></span><span>Launching soon on XRPL mainnet</span></div>
+</header>
+
+<main>
+<section class="wrap hero">
+  <div class="hero-copy">
+    <p class="eyebrow mono">Identity credentials for the XRP Ledger</p>
+    <h1 class="serif">Verify once.<br>Trusted on-ledger.</h1>
+    <p class="lede">Users complete a quick ID verification on our site. We issue a native XRPL credential to their wallet that says one thing: this account belongs to a verified person. Token issuers and permissioned DEXs accept it — no KYC stack of their own.</p>
+
+    <form id="waitlist" novalidate>
+      <label for="email">Get early access</label>
+      <div class="row">
+        <input id="email" name="email" type="email" autocomplete="email" placeholder="you@project.xyz" required>
+        <button type="submit">Join the waitlist</button>
+      </div>
+      <div class="hp" aria-hidden="true"><label for="website">Website</label><input id="website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+      <p class="hint" id="hint">Building a token or DEX? Mention it and we’ll reach out about project billing.</p>
+    </form>
+    <div class="done" id="done" hidden role="status">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7FDDB0" stroke-width="2" aria-hidden="true" style="flex:0 0 auto"><path d="m5 12 4.5 4.5L19 7"/></svg>
+      <span>You’re on the list. We’ll email you when verification opens.</span>
+    </div>
+  </div>
+
+  <div class="card-col">
+    <div class="card mono">
+      <div class="card-head"><span>Ledger object · Credential</span><span style="color:var(--accent)">Accepted</span></div>
+      <div class="card-body">
+        <div class="field"><small>Subject</small><span>rU7x…9fQk <em>(your wallet)</em></span></div>
+        <div class="field"><small>Issuer</small><span>rAtt…stry <em>(Attestry)</em></span></div>
+        <div class="field"><small>CredentialType</small><span style="color:var(--accent)">VERIFIED_PERSON</span></div>
+        <div class="field"><small>Personal data on-ledger</small><span>None</span></div>
+      </div>
+      <div class="card-foot">Illustrative example · addresses shortened</div>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap">
+    <h2 class="serif">How it works</h2>
+    <div class="steps">
+      <div class="step"><span class="num mono">01</span><h3>Verify your identity</h3><p>Connect a wallet, scan an ID and take a quick selfie. Document and biometric checks run in minutes.</p></div>
+      <div class="step"><span class="num mono">02</span><h3>Receive your credential</h3><p>We issue a native XRPL credential to your account. You accept it with one transaction — no documents ever touch the ledger.</p></div>
+      <div class="step"><span class="num mono">03</span><h3>Use it everywhere</h3><p>Permissioned domains that list Attestry as an accepted issuer let your wallet in — tokens, DEXs and lending pools alike.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap split">
+  <div class="split-copy">
+    <h2 class="serif">Compliance-ready users, without running KYC yourself.</h2>
+    <p>XRPL now supports credentials and permissioned domains natively. Add Attestry to your domain’s accepted credentials and only verified wallets can hold your token or trade on your book.</p>
+  </div>
+  <div class="tiles">
+    <div class="tile"><h3>Token issuers</h3><p>Gate RWAs, stablecoins and regulated tokens to verified holders.</p></div>
+    <div class="tile"><h3>Permissioned DEXs</h3><p>Run order books where every counterparty is a known person.</p></div>
+    <div class="tile"><h3>Per verification</h3><p>Users pay [PRICE] once and carry the credential across every app.</p></div>
+    <div class="tile"><h3>Project billing</h3><p>Cover verification for your users and get billed monthly.</p></div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Attestry.</span>
+    <a href="mailto:[YOUR EMAIL]">[YOUR EMAIL]</a>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var form = document.getElementById('waitlist');
+  var input = document.getElementById('email');
+  var hint = document.getElementById('hint');
+  var done = document.getElementById('done');
+  var btn = form.querySelector('button');
+  var original = hint.textContent;
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var email = input.value.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      hint.textContent = 'Please enter a valid email address.';
+      hint.classList.add('err');
+      input.focus();
+      return;
+    }
+    btn.disabled = true;
+    fetch('/api/waitlist', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email, website: form.website.value })
+    }).then(function (r) {
+      if (!r.ok) throw new Error();
+      form.hidden = true;
+      done.hidden = false;
+    }).catch(function () {
+      hint.textContent = 'Something went wrong. Please try again.';
+      hint.classList.add('err');
+      btn.disabled = false;
+    });
+  });
+
+  input.addEventListener('input', function () {
+    if (hint.classList.contains('err')) { hint.textContent = original; hint.classList.remove('err'); }
+  });
+})();
+</script>
+</body>
+</html>
